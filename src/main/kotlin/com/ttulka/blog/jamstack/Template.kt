@@ -18,7 +18,7 @@ class Template(private val content: String) {
     }
 
     private fun removeFragments(str: String): String {
-        var result = content
+        var result = str
         var found: Boolean
         do {
             found = false

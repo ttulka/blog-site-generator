@@ -5,7 +5,7 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
-abstract sealed class Page(private val config: GenProps, private val props: PageProps) {
+sealed class Page(private val config: GenProps, private val props: PageProps) {
     companion object {
         private const val TEMPLATES: String = "templates"
         private const val LAYOUT: String = "layout.html"
