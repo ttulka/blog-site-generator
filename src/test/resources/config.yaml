@@ -1,0 +1,46 @@
+generator:
+  source: src/test/resources/site
+  target: build/site
+
+blog:
+  title: "Tomas Tulka's Blog"
+  description: "Random thoughts about programming and other stuff."
+  author: "Tomas Tulka"
+  url: https://blog.ttulka.com/
+
+pages:
+  - privacypolicy
+  - about
+
+posts:
+  - title: "Containers under the Hood"
+    uri: containers-under-the-hood
+    createdAt: 2021-10-06
+    summary: "Let’s talk about the underlying technology that enables containers under Linux, and build a container from scratch!"
+    tags: Docker,Containers,DevOps,Linux
+  - title: "Building Container Images without a Dockerfile"
+    uri: building-container-images-without-dockerfile
+    createdAt: 2021-09-30
+    summary: "Container images are just tarballs with a bit of configuration. Dockerfiles are just one option to create them."
+    tags: Docker,Containers,DevOps
+  - title: "Learning WebAssembly Series"
+    uri: learning-webassembly-series
+    createdAt: 2021-07-19
+    summary: "A series of learning texts covering the first steps with WebAssembly for complete beginners."
+    tags: WebAssembly,Programming
+    highlight: true
+  - title: "Learning WebAssembly #3: Wat Programming Basics"
+    uri: learning-webassembly-3-wat-programming-basics
+    createdAt: 2021-01-04
+    summary: "Learning basic building blocks of programming in WebAssembly text format (Wat)."
+    tags: WebAssembly,Programming
+  - title: "Learning WebAssembly #2: Wasm Binary Format"
+    uri: learning-webassembly-2-wasm-binary-format
+    createdAt: 2021-01-04
+    summary: "Discovering the basic representation of WebAssembly: binary and text formats."
+    tags: WebAssembly,Programming
+  - title: "Learning WebAssembly #1: Hello, World of Wasm!"
+    uri: learning-webassembly-1-hello-world-of-wasm
+    createdAt: 2021-01-04
+    summary: "Getting started with WebAssembly: writing and executing a simple program in Wat."
+    tags: WebAssembly,Programming
