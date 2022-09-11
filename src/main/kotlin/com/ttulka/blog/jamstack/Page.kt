@@ -7,18 +7,18 @@ import kotlin.io.path.writeText
 
 sealed class Page(private val config: GenProps, private val props: PageProps) {
     companion object {
-        private const val TEMPLATES: String = "templates"
+        private const val TEMPLATES: String = "/site/templates"
         private const val LAYOUT: String = "layout.html"
     }
 
     abstract fun generate(file: String)
 
     fun template(name: String): Template {
-        return Template(config.sourceDir.resolve(TEMPLATES).resolve(name).readText())
+        return Template(readResourceAsText("$TEMPLATES/$name"))
     }
 
     fun layout(): Template {
-        return Template(config.sourceDir.resolve(TEMPLATES).resolve(LAYOUT).readText())
+        return Template(readResourceAsText("$TEMPLATES/$LAYOUT"))
             .replace("page.title", props.title)
             .replace("page.description", props.description)
             .replace("page.author", props.author)
@@ -30,6 +30,8 @@ sealed class Page(private val config: GenProps, private val props: PageProps) {
         path.parent.createDirectories()
         path.writeText(content)
     }
+
+    fun readResourceAsText(path: String): String = object {}.javaClass.getResource(path)!!.readText()
 }
 
 data class GenProps(val sourceDir: Path, val targetDir: Path)

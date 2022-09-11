@@ -2,6 +2,7 @@ package com.ttulka.blog.jamstack
 
 import com.sksamuel.hoplite.ConfigLoader
 import java.io.File
+import java.net.URL
 import java.nio.file.Path
 import kotlin.math.ceil
 
@@ -21,7 +22,7 @@ fun main(args: Array<String>) {
 
     cleanTarget(targetDir)
 
-    copyAssets(sourceDir, targetDir)
+    copyAssets(targetDir)
 
     generateIndex(config, genProps)
     generateStaticPages(config, genProps)
@@ -33,12 +34,12 @@ fun main(args: Array<String>) {
     println("Blog jamstack generated to: $targetDir")
 }
 
-fun cleanTarget(target: Path) {
-    target.toFile().deleteRecursively()
+fun cleanTarget(targetDir: Path) {
+    targetDir.toFile().deleteRecursively()
 }
 
-fun copyAssets(source: Path, target: Path) {
-    source.toFile().copyRecursively(target.toFile())
+fun copyAssets(targetDir: Path) {
+    File({}.javaClass.getResource("/site/assets")!!.toURI()).copyRecursively(targetDir.resolve("assets").toFile())
 }
 
 fun generateIndex(config: Config, genProps: GenProps) {

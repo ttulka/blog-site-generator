@@ -19,6 +19,7 @@ class PostPage(private val config: GenProps,
 
         val layout = layout()
         val template = template("post.html")
+            .replace("uri", post.uri)
             .replace("title", post.title)
             .replace("createdAt", post.createdAt.format(DateTimeFormatter.ISO_DATE))
             .replace("author", post.author)

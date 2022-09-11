@@ -9,7 +9,7 @@ import kotlin.io.path.writeText
 
 class Sitemap(private val config: GenProps, private val posts: List<PostItem>) {
     companion object {
-        private const val TEMPLATES: String = "templates"
+        private const val TEMPLATES: String = "/site/templates"
         private const val SITEMAP: String = "sitemap.xml"
     }
 
@@ -31,7 +31,7 @@ class Sitemap(private val config: GenProps, private val posts: List<PostItem>) {
     }
 
     private fun template(): Template {
-        return Template(config.sourceDir.resolve(TEMPLATES).resolve(SITEMAP).readText())
+        return Template(readResourceAsText("$TEMPLATES/$SITEMAP"))
     }
 
     private fun writeToFile(file: String, content: String) {
@@ -39,6 +39,8 @@ class Sitemap(private val config: GenProps, private val posts: List<PostItem>) {
         path.parent.createDirectories()
         path.writeText(content)
     }
+
+    private fun readResourceAsText(path: String): String = object {}.javaClass.getResource(path)!!.readText()
 }
 
 data class PostItem(val loc: String, val lastmod: LocalDate)
