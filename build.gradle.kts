@@ -1,20 +1,20 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.7.10"
     application
 }
 
 group = "com.ttulka.blog.jamstack"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("com.sksamuel.hoplite:hoplite-yaml:1.4.15")
-    implementation("com.sksamuel.hoplite:hoplite-json:1.4.15")
+    implementation("com.sksamuel.hoplite:hoplite-yaml:2.6.2")
+    implementation("com.sksamuel.hoplite:hoplite-json:2.6.2")
     testImplementation(kotlin("test"))
 }
 

@@ -8,15 +8,20 @@ import kotlin.math.ceil
 const val POSTS_ON_PAGE = 10
 
 fun main(args: Array<String>) {
-    val configFile = Path.of(args.getOrElse(0) { "./config.yaml" })
-    println("Generating a blog static site... ${configFile.normalize().toAbsolutePath()}")
+    val configFile = Path.of(args.getOrElse(0) { "./config.yaml" }).normalize().toAbsolutePath()
+    println("Loading a config file: $configFile")
 
-    val config = ConfigLoader().loadConfigOrThrow<Config>(configFile)
-    val genProps = GenProps(Path.of(config.generator.source), Path.of(config.generator.target))
+    val config = ConfigLoader().loadConfigOrThrow<Config>(configFile.toString())
+    val sourceDir = configFile.parent!!.resolve(config.generator.source)
+    val targetDir = configFile.parent!!.resolve(config.generator.target)
 
-    cleanTarget(config.generator.target)
+    println("Generating a static site from: $sourceDir")
 
-    copyAssets(config.generator.source, config.generator.target)
+    val genProps = GenProps(sourceDir, targetDir)
+
+    cleanTarget(targetDir)
+
+    copyAssets(sourceDir, targetDir)
 
     generateIndex(config, genProps)
     generateStaticPages(config, genProps)
@@ -24,14 +29,16 @@ fun main(args: Array<String>) {
     generatePagination(config, genProps)
     generateTagsPagination(config, genProps)
     generateSitemap(config, genProps)
+
+    println("Blog jamstack generated to: $targetDir")
 }
 
-fun cleanTarget(target: String) {
-    File(target).deleteRecursively()
+fun cleanTarget(target: Path) {
+    target.toFile().deleteRecursively()
 }
 
-fun copyAssets(source: String, target: String) {
-    File(source).copyRecursively(File(target))
+fun copyAssets(source: Path, target: Path) {
+    source.toFile().copyRecursively(target.toFile())
 }
 
 fun generateIndex(config: Config, genProps: GenProps) {

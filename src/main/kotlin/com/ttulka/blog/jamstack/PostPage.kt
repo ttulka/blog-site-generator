@@ -50,7 +50,7 @@ class PostPage(private val config: GenProps,
     private fun loadComments(): List<Comment> {
         val pathToJson = config.sourceDir.resolve(COMMENTS).resolve("${post.uri}.json")
         return if (pathToJson.exists())
-            ConfigLoader().loadConfigOrThrow<Comments>(pathToJson).comments
+            ConfigLoader().loadConfigOrThrow<Comments>(pathToJson.toString()).comments
         else listOf()
     }
 
