@@ -62,7 +62,7 @@ class PostPage(private val config: GenProps,
                     comment.answers?.let { it.forEach { a -> append(answerTpl
                         .replace("answer.author", a.author)
                         .replace("answer.createdAt", a.createdAt.format(DateTimeFormatter.ISO_DATE))
-                        .replace("answer.body", a.body)
+                        .replace("answer.body", formatBody(a.body))
                         .asString()
                     )}}
                     toString()
@@ -71,13 +71,29 @@ class PostPage(private val config: GenProps,
                     .replace("answers", answers)
                     .replace("comment.author", comment.author)
                     .replace("comment.createdAt", comment.createdAt.format(DateTimeFormatter.ISO_DATE))
-                    .replace("comment.body", comment.body)
+                    .replace("comment.body", formatBody(comment.body))
                     .asString()
                 )
             }
             toString()
         }
     }
+
+    private fun formatBody(body: String): String = linkify(markdown(safeText(body)))
+
+    private fun safeText(text: String): String =
+        text.replace("<", "&#x3C;").replace(">", "&#x3E;")
+
+    private fun markdown(text: String): String =
+        text.replace("(```)[\\s]*(((?!```)[\\s\\S])+)[\\s]*(```)".toRegex()) { "<pre><code>${it.groupValues[2]}</code></pre>" }
+            .replace("(`)(((?!`).)+)(`)".toRegex()) { "<code>${it.groupValues[2]}</code>" }
+            .replace("(\\*\\*)(((?!\\*\\*).)+)(\\*\\*)".toRegex()) { "<b>${it.groupValues[2]}</b>" }
+            .replace("(\\*)(((?!\\*).)+)(\\*)".toRegex()) { "<i>${it.groupValues[2]}</i>" }
+            .replace("(_)(((?!_).)+)(_)".toRegex()) { "<u>${it.groupValues[2]}</u>" }
+
+    private fun linkify(text: String) =
+        text.replace("https?://[^\\s)(\"<>]+".toRegex())
+            { "<a href=\"${it.value}\" target=\"_blank\" rel=\"noopener noreferrer\">${it.value}</a>" }
 
     data class Comments(val comments: List<Comment>)
     data class Comment(val author: String, val createdAt: LocalDate, val body: String, val answers: List<Answer>?)
