@@ -23,6 +23,7 @@ fun main(args: Array<String>) {
     cleanTarget(targetDir)
 
     copyAssets(targetDir)
+    copyRoot(targetDir)
 
     generateIndex(config, genProps)
     generateStaticPages(config, genProps)
@@ -40,6 +41,10 @@ fun cleanTarget(targetDir: Path) {
 
 fun copyAssets(targetDir: Path) {
     File({}.javaClass.getResource("/site/assets")!!.toURI()).copyRecursively(targetDir.resolve("assets").toFile())
+}
+
+fun copyRoot(targetDir: Path) {
+    File({}.javaClass.getResource("/site/root")!!.toURI()).copyRecursively(targetDir.toFile())
 }
 
 fun generateIndex(config: Config, genProps: GenProps) {
