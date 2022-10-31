@@ -268,6 +268,20 @@ h2.blog-post__title {
     line-height: initial;
 }
 
+.blog-post table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.2rem solid var(--lightgray, silver);
+    margin: 3rem 0;
+}
+.blog-post td, .blog-post th {
+    border: 1px solid var(--lightgray, silver);
+    padding: 0.3em 0.5em;
+}
+.blog-post th {
+    font-size: 0.8em;
+}
+
 .footer {
     border-top: 1px solid var(--lightgray, silver);
     background-color: var(--light, lightgray);
