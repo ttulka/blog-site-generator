@@ -9,14 +9,14 @@ import kotlin.math.ceil
 const val POSTS_ON_PAGE = 10
 
 fun main(args: Array<String>) {
-    val configFile = Path.of(args.getOrElse(0) { "./config.yaml" }).normalize().toAbsolutePath()
-    println("Loading a config file: $configFile")
+    val configFile = Path.of(args.getOrElse(0) { "./config.yaml" }).toAbsolutePath().normalize()
+    println("Loading a config file:\t\t$configFile")
 
     val config = ConfigLoader().loadConfigOrThrow<Config>(configFile.toString())
-    val sourceDir = configFile.parent!!.resolve(config.generator.source)
-    val targetDir = configFile.parent!!.resolve(config.generator.target)
+    val sourceDir = configFile.parent!!.resolve(config.generator.source).normalize()
+    val targetDir = configFile.parent!!.resolve(config.generator.target).normalize()
 
-    println("Generating a static site from: $sourceDir")
+    println("Generating a static site from:\t$sourceDir")
 
     val genProps = GenProps(sourceDir, targetDir)
 
@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
     generateTagsPagination(config, genProps)
     generateSitemap(config, genProps)
 
-    println("Blog jamstack generated to: $targetDir")
+    println("Blog jamstack generated to:\t$targetDir")
 }
 
 fun cleanTarget(targetDir: Path) {
