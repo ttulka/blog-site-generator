@@ -22,7 +22,7 @@ fun main(args: Array<String>) {
 
     cleanTarget(targetDir)
 
-    copyAssets(targetDir)
+    copyAssets(sourceDir, targetDir)
     copyRoot(targetDir)
 
     generateIndex(config, genProps)
@@ -39,8 +39,9 @@ fun cleanTarget(targetDir: Path) {
     targetDir.toFile().deleteRecursively()
 }
 
-fun copyAssets(targetDir: Path) {
+fun copyAssets(sourceDir: Path, targetDir: Path) {
     File({}.javaClass.getResource("/site/assets")!!.toURI()).copyRecursively(targetDir.resolve("assets").toFile())
+    sourceDir.resolve("assets").toFile().copyRecursively(targetDir.resolve("assets").toFile())
 }
 
 fun copyRoot(targetDir: Path) {
