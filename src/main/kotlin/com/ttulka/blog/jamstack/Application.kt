@@ -53,18 +53,20 @@ fun generateIndex(config: Config, genProps: GenProps) {
 
     IndexPage(genProps, PageProps(config.blog.title, config.blog.description, config.blog.author, config.blog.url),
         config.posts
+            .sortedByDescending { it.createdAt }
             .take(3)
             .map(postLinkMap)
             .toList(),
         config.posts
             .filter { it.highlight != null && it.highlight }
+            .sortedByDescending { it.createdAt }
             .map(postLinkMap)
             .toList()
     ).generate("index.html")
 }
 
 fun generatePosts(config: Config, genProps: GenProps) {
-    config.posts.forEach {
+    config.posts.sortedByDescending { it.createdAt }.forEach {
         PostPage(genProps,
             PageProps(it.title, it.summary, config.blog.author, config.blog.url + it.uri),
             PostData(it.title, it.uri, it.createdAt, config.blog.author, it.summary, it.tags)
@@ -86,7 +88,8 @@ fun generatePagination(config: Config, genProps: GenProps) {
     for (page in 1..pageCount) {
         PostsPage(genProps,
             PageProps(config.blog.title, config.blog.description, config.blog.author, "${config.blog.url}$page"),
-            config.posts
+            config.posts.asSequence()
+                .sortedByDescending { it.createdAt }
                 .drop((page - 1) * POSTS_ON_PAGE)
                 .take(POSTS_ON_PAGE)
                 .map { PostLink(it.title, it.uri, it.createdAt, config.blog.author, it.summary) }
@@ -100,9 +103,10 @@ fun generatePagination(config: Config, genProps: GenProps) {
 
 fun generateTagsPagination(config: Config, genProps: GenProps) {
     config.posts
+        .sortedByDescending { it.createdAt }
         .flatMap { it.tags }
         .forEach { tag ->
-        val posts = config.posts.filter { tag in it.tags }.toList()
+        val posts = config.posts.filter { tag in it.tags }.sortedByDescending { it.createdAt }.toList()
         val pageCount = ceil(posts.size.toDouble() / POSTS_ON_PAGE).toInt()
         for (page in 1..pageCount) {
             val location = if (page == 1) "tag/$tag" else "tag/$tag/$page"
@@ -123,6 +127,7 @@ fun generateTagsPagination(config: Config, genProps: GenProps) {
 }
 
 fun generateSitemap(config: Config, genProps: GenProps) {
-    Sitemap(genProps, config.posts.map { PostItem("${config.blog.url}${it.uri}/", it.createdAt) })
+    Sitemap(genProps, config.posts.sortedByDescending { it.createdAt }
+        .map { PostItem("${config.blog.url}${it.uri}/", it.createdAt) })
         .generate("sitemap.xml")
 }
