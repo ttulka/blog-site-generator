@@ -493,3 +493,18 @@ code {
     font-weight: bold;
     padding-right: 1em;
 }
+
+.highlights {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    color: var(--lightgray, silver);
+    font-size: 1.2rem;
+    font-style: italic;
+    margin: 2rem 0;
+}
+.highlights::before, .highlights::after {
+    content: "";
+    border-top: 1px double var(--lightgray, silver);
+    align-self: center;    
+}
